@@ -24,3 +24,4 @@ let vm = new MyVue({
 // vm.list[0] = {id: 1, name: 'orange'}
 // vm.list.push({ id: 2, name: 'banana' })
 // vm.list[1].name = 'perl'
+vm.message = '迪丽日巴'

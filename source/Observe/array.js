@@ -18,7 +18,6 @@ methodsToPatch.forEach(function (method) {
   const original = arrayProto[method]
   def(arrayMethods, method, function mutator(...args) {
     const result = original.apply(this, args)
-    console.log(this)
     let inserted
     switch (method) {
       case 'push':

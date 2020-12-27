@@ -1,11 +1,15 @@
-import { hasProto, isObject, def } from '../util'
+import { hasProto, hasOwn, isObject, def, isPlainObject } from '../util'
 import { arrayMethods } from './array'
+import Dep from './dep'
 
 const arrayKeys = Object.getOwnPropertyNames(arrayMethods)
 
 export default class Observe {
   // 用 `value` 准确的说明是对值进行 observe
   constructor(value) {
+    // 缓存起来，避免多次 observe
+    def(value, '__ob__', this)
+
     if (Array.isArray(value)) {
       // 让数组的 push 等操作也能被 observe 到
       if (hasProto) {
@@ -41,6 +45,7 @@ function defineReactive(obj, key, val) {
   }
   // 多层级的 observe
   observe(val)
+  let dep = new Dep() // 一个 key 对应一个 dep
   Object.defineProperty(obj, key, {
     enumerable: true,
     configurable: true,
@@ -60,11 +65,17 @@ function defineReactive(obj, key, val) {
   })
 }
 
-export function observe(data) {
-  if (!isObject(data)) {
+export function observe(value) {
+  if (!isObject(value)) {
     return
   }
-  return new Observe(data)
+  let ob
+  if (hasOwn(value, '__ob__') && value.__ob__ instanceof Observe) {
+    ob = value.__ob__
+  } else if ((Array.isArray(value) || isPlainObject(value)) && !value._isVue) {
+    ob = new Observe(value)
+  }
+  return ob
 }
 
 export function observeArray(items) {

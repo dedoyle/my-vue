@@ -17,6 +17,11 @@ export function hasProto() {
   return '__proto__' in {}
 }
 
+const hasOwnProperty = Object.prototype.hasOwnProperty
+export function hasOwn(obj, key) {
+  return hasOwnProperty.call(obj, key)
+}
+
 // define a property
 export function def(obj, key, val, enumerable) {
   Object.defineProperty(obj, key, {
@@ -26,3 +31,19 @@ export function def(obj, key, val, enumerable) {
     configurable: true,
   })
 }
+
+export function query(el) {
+  if (typeof el === 'string') {
+    return document.querySelector(el)
+  } else {
+    return el
+  }
+}
+
+export let warn = noop
+
+if (process.env.NODE_ENV !== 'production') {
+  warn = (msg) => {
+    console.error(`[Vue warn]: ${msg}`)
+  }
+} 
