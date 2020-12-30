@@ -43,13 +43,17 @@ function defineReactive(obj, key, val) {
   if (arguments.length === 2) {
     val = obj[key]
   }
-  // 多层级的 observe
+  // val 也需要 observe
   observe(val)
   let dep = new Dep() // 一个 key 对应一个 dep
   Object.defineProperty(obj, key, {
     enumerable: true,
     configurable: true,
     get: function reactiveGetter() {
+      if (Dep.target) {
+        // 让 dep 保存 watcher，也让 watcher 保存这个 dep
+        dep.depend()
+      }
       return val
     },
     set: function reactiveSetter(newVal) {
@@ -61,6 +65,8 @@ function defineReactive(obj, key, val) {
       console.log('更新了', newVal)
       // 对新值 observe
       observe(newVal)
+      // 通知 watcher 更新
+      dep.notify()
     },
   })
 }

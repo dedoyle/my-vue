@@ -15,7 +15,6 @@ MyVue.prototype._update = function () {
   }
   // 2. 替换 dom 树中的数据
   compiler(node, vm)
-  console.log(node)
 
   // 3. 挂载新的 node
   el.appendChild(node)
