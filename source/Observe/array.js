@@ -19,6 +19,7 @@ methodsToPatch.forEach(function (method) {
   def(arrayMethods, method, function mutator(...args) {
     const result = original.apply(this, args)
     let inserted
+    // vue 实际上只 observe 所有插入的新值
     switch (method) {
       case 'push':
       case 'unshift':

@@ -6,10 +6,14 @@ export default function MyVue(options) {
   if (!(this instanceof MyVue)) {
     return new MyVue()
   }
+  console.log('--------------------')
+  console.log('new MyVue 新组件')
+  console.log('--------------------')
   this._init(options)
 }
 
 MyVue.prototype._init = function _init(options) {
+  console.log('__init options')
   let vm = this
 
   // 避免被 observe
@@ -29,34 +33,21 @@ MyVue.prototype._init = function _init(options) {
 MyVue.prototype.$mount = function $mount(el) {
   let vm = this
   el = el && query(el)
-  return mountComponent(vm, el)
-}
-
-// 如果检测到 options 包含 render 选项，即是否包含渲染函数。
-// 包含的话，就直接调用运行时的 $mount
-/**
- * 定义在 src/platforms/web/runtime/index.js
- * public mount method
- * 因为 Vue 有很多构建版本, 有些版本会依赖此方法进行有些功能定制,
- */
-const mount = MyVue.prototype.$mount
-MyVue.prototype.$mount = function $mount(el) {
-  let vm = this
-  el = el && query(el)
-
   if (el === document.body || el === document.documentElement) {
     warn(
       '挂载点的本意是组件挂载的占位，它将会被组件自身的模板替换掉，而<body>元素和<html>元素是不能被替换掉的'
     )
     return this
   }
-  return mount.call(vm, el)
+  return mountComponent(vm, el)
 }
 
 export function initState(vm) {
   let opt = vm.$options
   if (opt.data) {
+    console.log('^^^^^^initData^^^^^^')
     initData(vm)
+    console.log('^^^^^^^^^^^^^^^^^^^^')
   }
 }
 

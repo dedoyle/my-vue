@@ -6,7 +6,7 @@ import Watcher from './observe/watcher'
 MyVue.prototype._update = function () {
   const vm = this
   let el = vm.$el
-  console.log(el)
+  console.log('_update 挂载到 dom')
   // 1. 获取 dom 树
   let node = document.createDocumentFragment()
   let firstChild
@@ -21,14 +21,14 @@ MyVue.prototype._update = function () {
 }
 
 export function mountComponent(vm, el) {
+  console.log('mountComponent vm el')
   vm.$el = el
-  // if (!vm.$options.render) {
-  //   vm.$options.render = createEmptyVNode
-  // }
+  
   let updateComponent = () => {
     vm._update()
   }
 
+  // 一个组件对应一个 watcher
   new Watcher(vm, updateComponent)
 
   return vm

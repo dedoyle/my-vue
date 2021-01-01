@@ -45,12 +45,15 @@ function defineReactive(obj, key, val) {
   }
   // val 也需要 observe
   observe(val)
+  // 利用了 闭包，将变量的值保持住
   let dep = new Dep() // 一个 key 对应一个 dep
+  console.log('new Dep', key)
   Object.defineProperty(obj, key, {
     enumerable: true,
     configurable: true,
     get: function reactiveGetter() {
       if (Dep.target) {
+        console.log('read', key, '==> Dep.target && dep.depend()')
         // 让 dep 保存 watcher，也让 watcher 保存这个 dep
         dep.depend()
       }
@@ -61,8 +64,8 @@ function defineReactive(obj, key, val) {
       if (newVal === val || (newVal !== newVal && val !== val)) {
         return
       }
+      console.log(val, '== 更新为 >>', newVal)
       val = newVal
-      console.log('更新了', newVal)
       // 对新值 observe
       observe(newVal)
       // 通知 watcher 更新

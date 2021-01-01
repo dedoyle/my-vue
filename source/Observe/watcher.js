@@ -1,4 +1,4 @@
-import { popTarget, pushTArget } from './dep'
+import { popTarget, pushTarget } from './dep'
 
 let uid = 0
 
@@ -8,7 +8,8 @@ let uid = 0
  * This is used for both the $watch() api and directives.
  */
 export default class Watcher {
-  constructor(vm, expOrFn, cb = () => {}, options) {
+  constructor(vm, expOrFn, cb = () => {}) {
+    console.log('new Watcher uid', uid)
     this.vm = vm
     this.expOrFn = expOrFn
     this.cb = cb
@@ -25,7 +26,7 @@ export default class Watcher {
    * Evaluate the getter, and re-collect dependencies.
    */
   get() {
-    pushTArget(this)
+    pushTarget(this)
     let value
     const vm = this.vm
     try {
@@ -37,6 +38,7 @@ export default class Watcher {
   }
 
   update() {
+    console.log('watcher update')
     this.get()
   }
 

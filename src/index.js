@@ -23,5 +23,5 @@ let vm = new MyVue({
 // vue2 这个是无法监听的，只能通过 this.$set
 // vm.list[0] = {id: 1, name: 'orange'}
 // vm.list.push({ id: 2, name: 'banana' })
-// vm.list[1].name = 'perl'
-vm.message = '迪丽日巴'
+// vm.list[0].name = 'perl'
+// vm.message = '迪丽日巴'
